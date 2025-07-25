@@ -6,7 +6,6 @@ use Illuminate\Database\Schema\Blueprint;
 
 class CreateLarapayTransactionTable extends Migration
 {
-
     /**
      * Run the migrations.
      */
@@ -38,15 +37,9 @@ class CreateLarapayTransactionTable extends Migration
             $table->text('description')->nullable();
             $table->bigInteger('amount')->default(0);
 
-            if (config('database.default') == 'pgsql') {
-                $table->jsonb('extra_params')->nullable()->default('{}');
-                $table->jsonb('additional_data')->nullable()->default('{}');
-                $table->jsonb('sharing')->nullable()->default('{}');
-            } else {
-                $table->jsonb('extra_params')->nullable();
-                $table->jsonb('additional_data')->nullable();
-                $table->jsonb('sharing')->nullable();
-            }
+            $table->json('extra_params')->nullable();
+            $table->json('additional_data')->nullable();
+            $table->json('sharing')->nullable();
 
             $table->dateTime('paid_at')->nullable();
             $table->timestamps();

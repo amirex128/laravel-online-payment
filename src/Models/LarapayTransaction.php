@@ -40,19 +40,39 @@ class LarapayTransaction extends Model implements TransactionInterface
         'sharing',
     ];
 
-    protected $dates = [
-        'created_at',
-        'updated_at',
-        'deleted_at',
-        'paid_at',
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime',
+        'paid_at' => 'datetime',
+        'accomplished' => 'boolean',
+        'verified' => 'boolean',
+        'after_verified' => 'boolean',
+        'reversed' => 'boolean',
+        'submitted' => 'boolean',
+        'approved' => 'boolean',
+        'rejected' => 'boolean',
+        'amount' => 'integer',
+        'extra_params' => 'array',
+        'additional_data' => 'array',
+        'sharing' => 'array',
     ];
 
+    /**
+     * Get the parent model that this transaction belongs to.
+     */
     public function model()
     {
         return $this->morphTo();
     }
 
-    public function reverseTransaction()
+    /**
+     * Reverse this transaction.
+     *
+     * @return bool
+     * @throws FailedReverseTransactionException
+     */
+    public function reverseTransaction(): bool
     {
         //make payment gateway handler
         $gatewayProperties     = json_decode($this->extra_params, true);
@@ -91,7 +111,15 @@ class LarapayTransaction extends Model implements TransactionInterface
         return true;
     }
 
-    public function generateForm($autoSubmit = false, $callback = null, $adapterConfig = [])
+    /**
+     * Generate payment form HTML.
+     *
+     * @param bool $autoSubmit Whether to auto-submit the form
+     * @param string|null $callback Custom callback route name
+     * @param array $adapterConfig Adapter configuration
+     * @return string
+     */
+    public function generateForm(bool $autoSubmit = false, ?string $callback = null, array $adapterConfig = []): string
     {
         $paymentGatewayHandler = $this->gatewayHandler($adapterConfig);
 
@@ -130,9 +158,15 @@ class LarapayTransaction extends Model implements TransactionInterface
         }
     }
 
-    public function formParams($callback = null, $adapterConfig = []): array
+    /**
+     * Get payment form parameters.
+     *
+     * @param string|null $callback Custom callback route name
+     * @param array $adapterConfig Adapter configuration
+     * @return array
+     */
+    public function formParams(?string $callback = null, array $adapterConfig = []): array
     {
-
         $paymentGatewayHandler = $this->gatewayHandler($adapterConfig);
 
         $callbackRoute = route(config("larapay.payment_callback"), [
@@ -164,7 +198,13 @@ class LarapayTransaction extends Model implements TransactionInterface
         }
     }
 
-    public function gatewayHandler($adapterConfig = [])
+    /**
+     * Get the gateway handler for this transaction.
+     *
+     * @param array $adapterConfig Adapter configuration
+     * @return mixed
+     */
+    public function gatewayHandler(array $adapterConfig = [])
     {
         return Larapay::make($this->gate_name, $this, $adapterConfig);
     }

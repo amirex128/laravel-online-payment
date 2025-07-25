@@ -1,19 +1,23 @@
 <?php
+
 namespace PhpMonsters\Larapay\Facades;
+
 use Illuminate\Support\Facades\Facade;
 
 /**
- * Class Larapay
- * @package PhpMonsters\Larapay\Facades
+ * Larapay Facade
  *
+ * @package PhpMonsters\Larapay\Facades
  */
 class Larapay extends Facade
 {
     /**
+     * Get the registered name of the component.
+     *
      * @return string
      */
-	protected static function getFacadeAccessor()
-	{
-		return 'larapay';
-	}
+    protected static function getFacadeAccessor(): string
+    {
+        return 'larapay';
+    }
 }

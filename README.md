@@ -46,7 +46,7 @@ Here are a few short examples of what you can do:
 
 
 ## Requirements
-Larapay Version 6+ required PHP 7+
+Larapay Version 8+ requires PHP 8.2+ and Laravel 11+ or Laravel 12+
 
 ## Installation
 1. Installing via composer

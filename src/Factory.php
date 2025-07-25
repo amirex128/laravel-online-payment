@@ -20,14 +20,15 @@ class Factory
     protected $gateway;
 
     /**
-     * @param $adapter adapter name
-     * @param TransactionInterface $invoice
-     * @param array adapter configuration
+     * Make a payment gateway adapter instance.
      *
+     * @param string $adapter The adapter name
+     * @param TransactionInterface $invoice The transaction instance
+     * @param array $adapterConfig The adapter configuration
      * @return $this
      * @throws Exception
      */
-    public function make(string $adapter, TransactionInterface $invoice, array $adapterConfig = [])
+    public function make(string $adapter, TransactionInterface $invoice, array $adapterConfig = []): self
     {
         $adapter = ucfirst(strtolower($adapter));
 
@@ -69,7 +70,15 @@ class Factory
         return $this;
     }
 
-    public function verifyTransaction(Request $request, array $adapterConfig = [])
+    /**
+     * Verify a transaction from gateway callback.
+     *
+     * @param Request $request The request instance
+     * @param array $adapterConfig The adapter configuration
+     * @return LarapayTransaction
+     * @throws Exception
+     */
+    public function verifyTransaction(Request $request, array $adapterConfig = []): LarapayTransaction
     {
         //get gateway and transaction id from request
         $gateway = $request->gateway;
@@ -241,13 +250,14 @@ class Factory
     }
 
     /**
-     * @param $name
-     * @param $arguments
+     * Dynamically call methods on the gateway adapter.
      *
+     * @param string $name The method name
+     * @param array $arguments The method arguments
      * @return mixed
      * @throws Exception
      */
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments): mixed
     {
         if (empty($this->gateway)) {
             throw new Exception("Gateway not defined before! please use make method to initialize gateway");

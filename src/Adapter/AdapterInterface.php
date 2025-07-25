@@ -46,4 +46,12 @@ interface AdapterInterface
      * @return bool
      */
     public function canContinueWithCallbackParameters(): bool;
+
+    /**
+     * Set SOAP client options.
+     *
+     * @param array $options SOAP client options
+     * @return void
+     */
+    public function setSoapOptions(array $options = []): void;
 }
