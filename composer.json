@@ -1,5 +1,5 @@
 {
-	"name": "php-monsters/laravel-online-payment",
+	"name": "amirex128/laravel-online-payment",
 	"description": "Iranian payment gateways handler for laravel applications",
 	"keywords": [
 		"payment",
